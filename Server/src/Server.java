@@ -61,7 +61,6 @@ class ServerOne extends Thread {
         try {
             while (true) {
                 if (Server.getClients().size()==2){
-                    System.out.println(Server.getClients().size());
                     out.println("start");
                 }
                 String str = in.readLine();

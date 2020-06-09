@@ -38,9 +38,10 @@ public class ServerConnectionProvider {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
         ServerMessageThreat serverThreat = new ServerMessageThreat();
+        serverThreat.start();
     }
     public void startgame() throws IOException {
-        Parent root = FXMLLoader.load(ServerConnectionProvider.class.getResource("gamescene.fxml"));
+        Parent root = FXMLLoader.load(ServerConnectionProvider.class.getResource("sample.fxml"));
         Stage stage = new Stage();
         stage.setTitle("BOMBERMEN");
         stage.setScene(new Scene(root, 620, 480));
@@ -55,13 +56,14 @@ public class ServerConnectionProvider {
     }
 
     class ServerMessageThreat extends Thread {
+        
         public void run() {
             try {
-                ServerConnectionProvider serverprovider = new ServerConnectionProvider();
                 String message = in.readLine();
                 System.out.println(message);
-                if (message.equals("start")) serverprovider.startgame();
-                else {
+                if (message.equals("start")) {
+                    startgame();
+                } else {
                     in.close();
                     out.close();
                     socket.close();
