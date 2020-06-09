@@ -1,21 +1,34 @@
-import Constants;
-import LevelData;
+package game;
 
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 
-public abstract class Character {
+public class Player {
 
-    private boolean isAlive = true;
+    private int cordX;
+    private int cordY;
+    private Client client;
 
-    private int moveSpeed = 3;
+    int moveSpeed = 3;
 
-    final LevelData levelData;
-
-    Character(LevelData levelData) {
-        this.levelData = levelData;
+    public Player(Client client) {
+        this.client = client;
     }
 
-    public boolean isAlive() {
-        return isAlive;
+    public int getCordX() {
+        return cordX;
+    }
+
+    public void setCordX(int cordX) {
+        this.cordX = cordX;
+    }
+
+    public int getCordY() {
+        return cordY;
+    }
+
+    public void setCordY(int cordY) {
+        this.cordY = cordY;
     }
 
     private int getAvailableLeftSteps() {
@@ -69,36 +82,49 @@ public abstract class Character {
 
     public void moveLeft() {
         final int availableSteps = getAvailableLeftSteps();
-       // setImageView(new Image(Constants.CHARACTER_IMAGE));
+        // setImageView(new Image(game.Constants.CHARACTER_IMAGE));
         setLayoutX(getLayoutX() - availableSteps);
     }
 
     public void moveRight() {
         final int availableSteps = getAvailableRightSteps();
-    //    setImageView(new Image(Constants.CHARACTER_R));
+        //    setImageView(new Image(game.Constants.CHARACTER_R));
         setLayoutX(getLayoutX() + availableSteps);
     }
 
-    public void moveUp() {
+    public void moveTop() {
         final int availableSteps = getAvailableUpSteps();
-     //   setImageView(new Image(Constants.CHARACTER_U));
+        //   setImageView(new Image(game.Constants.CHARACTER_U));
         setLayoutY(getLayoutY() - availableSteps);
     }
 
     public void moveDown() {
         final int availableSteps = getAvailableDownSteps();
-       // setImageView(new Image(Constants.CHARACTER_IMAGE));
+        // setImageView(new Image(game.Constants.CHARACTER_IMAGE));
         setLayoutY(getLayoutY() + availableSteps);
     }
 
-    public void explosive(final int posX, final int posY) {
-        final double cordX = getLayoutX();
-        final double cordY = getLayoutY();
-        final int characterPosX = LevelData.getPositionByCoordinate(cordX);
-        final int characterPosY = LevelData.getPositionByCoordinate(cordY);
-        if (characterPosX == posX && characterPosY == posY) {
-            isAlive = false;
+    public void setBomb() {
+        final int bombPosX = LevelData.getPositionByCoordinate(getLayoutX());
+        final int bombPosY = LevelData.getPositionByCoordinate(getLayoutY());
+        levelData.plantBomb(bombPosX, bombPosY);
+        availableBombCount--;
+    }
+
+    public void releaseBomb() {
+        synchronized (LOCK) {
+            availableBombCount++;
         }
+    }
+
+    private boolean hasSpaceForBomb() {
+        final int posX = LevelData.getPositionByCoordinate(getLayoutX());
+        final int posY = LevelData.getPositionByCoordinate(getLayoutY());
+        return levelData.getBlockByPosition(posX, posY).isPermeable();
+    }
+
+    public boolean canPlantBomb() {
+        return ((availableBombCount > 0) && hasSpaceForBomb() && isAlive());
     }
 
     private boolean getBlockPermeableByOffset(final int offsetX, final int offsetY) {
@@ -129,4 +155,5 @@ public abstract class Character {
 
         return false;
     }
+
 }

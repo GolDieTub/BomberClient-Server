@@ -1,3 +1,5 @@
+package game;
+
 public class Constants {
     static final int BLOCK_SIZE = 64;
     public static final int CHARACTER_SIZE = 48;

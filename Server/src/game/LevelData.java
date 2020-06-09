@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package game;
+
 import java.util.List;
 
 public class LevelData {
@@ -36,12 +37,32 @@ public class LevelData {
         return getBlockByPosition(posX, posY);
     }
 
+    public void move(int playerId, int directionCode){
+        final Player player = players.get(playerId);
+        switch (directionCode){
+            case Direction.TOP:
+                player.moveTop();
+                break;
+            case Direction.RIGHT:
+                player.moveRight();
+                break;
+            case Direction.DOWN:
+                player.moveDown();
+                break;
+            case Direction.LEFT:
+                player.moveLeft();
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
     public static int getPositionByCoordinate(final double cord) {
         return ((int) cord / Constants.BLOCK_SIZE);
     }
 
 //    public void plantBomb(final int posX, final int posY) {
-//        if (Player.canPlantBomb()) {
+//        if (game.Player.canPlantBomb()) {
 //            final Executable explosiveTask = new ExplosiveTask(posX, posY);
 //            final Block bomb = new Bomb(explosiveTask);
 //            levelContent[posX][posY] = bomb;
@@ -50,19 +71,19 @@ public class LevelData {
 //    }
 
 //    public double getPaneHeight() {
-//        return getHeight() * Constants.BLOCK_SIZE;
+//        return getHeight() * game.Constants.BLOCK_SIZE;
 //    }
 //
 //    public double getPaneWidth() {
-//        return getWidth() * Constants.BLOCK_SIZE;
+//        return getWidth() * game.Constants.BLOCK_SIZE;
 //    }
 //
 //    public double getBlockCordX(final int posX) {
-//        return posX * Constants.BLOCK_SIZE;
+//        return posX * game.Constants.BLOCK_SIZE;
 //    }
 //
 //    public double getBlockCordY(final int posY) {
-//        return posY * Constants.BLOCK_SIZE;
+//        return posY * game.Constants.BLOCK_SIZE;
 //    }
 
 //    private void explosion(final int posX, final int posY) {
@@ -111,7 +132,7 @@ public class LevelData {
 //
 //        private void explosiveTop() {
 //            boolean active = true;
-//            for (int i = 0; i < Constants.EXPLOSIVE_POWER && active; i++) {
+//            for (int i = 0; i < game.Constants.EXPLOSIVE_POWER && active; i++) {
 //                final int posY = this.posY - i;
 //                final Block block = getBlockByPosition(posX, posY);
 //                if (block != null) {
@@ -127,7 +148,7 @@ public class LevelData {
 //
 //        private void explosiveBottom() {
 //            boolean active = true;
-//            for (int i = 0; i < Constants.EXPLOSIVE_POWER && active; i++) {
+//            for (int i = 0; i < game.Constants.EXPLOSIVE_POWER && active; i++) {
 //                final int posY = this.posY + i;
 //                final Block block = getBlockByPosition(posX, posY);
 //                if (block != null) {
@@ -142,7 +163,7 @@ public class LevelData {
 //
 //        private void explosiveLeft() {
 //            boolean active = true;
-//            for (int i = 0; i < Constants.EXPLOSIVE_POWER && active; i++) {
+//            for (int i = 0; i < game.Constants.EXPLOSIVE_POWER && active; i++) {
 //                final int posX = this.posX - i;
 //                final Block block = getBlockByPosition(posX, posY);
 //                if (block != null) {
@@ -157,7 +178,7 @@ public class LevelData {
 //
 //        private void explosiveRight() {
 //            boolean active = true;
-//            for (int i = 0; i < Constants.EXPLOSIVE_POWER && active; i++) {
+//            for (int i = 0; i < game.Constants.EXPLOSIVE_POWER && active; i++) {
 //                final int posX = this.posX + i;
 //                final Block block = getBlockByPosition(posX, posY);
 //                if (block != null) {
@@ -181,8 +202,8 @@ public class LevelData {
 //    private class OverlayThread extends Thread {
 //        @Override
 //        public void run() {
-//            while (LevelData.this.isActive()) {
-//                for (final Character enemy : enemies) {
+//            while (game.LevelData.this.isActive()) {
+//                for (final game.Character enemy : enemies) {
 //                    if (bomberman.isOverlayCharacter(enemy)) {
 //                        needRebuilding = true;
 //                    }

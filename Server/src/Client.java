@@ -2,12 +2,12 @@ import java.io.*;
 import java.net.Socket;
 
 
-public class Client extends Thread {
+public class Client {
 
-    private static int CONNECTION_TIMEOUT = 300000;
+    private int id;
     private final PrintWriter out;
     private BufferedReader in;
-
+    private boolean isActive = true;
     private Socket socket;
 
     private String name;
@@ -24,22 +24,36 @@ public class Client extends Thread {
                 new BufferedWriter(
                         new OutputStreamWriter(
                                 socket.getOutputStream())), true);
+        new CommandReader().start();
     }
 
-    public BufferedReader getIn() {
-        return in;
+    public int getId() {
+        return id;
     }
 
-    public PrintWriter getOut() {
-        return out;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public boolean isActive() {
-        return active;
+    private String command;
+
+    public String getCommand(){
+        String currentCommand = command;
+        command = null;
+        return currentCommand;
     }
 
-    @Override
-    public void run() {
-
+    private class CommandReader extends Thread{
+        @Override
+        public void run() {
+            while (isActive){
+                try {
+                    String command = in.readLine();
+                    Client.this.command = command;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

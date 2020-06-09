@@ -1,3 +1,5 @@
+import game.Player;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -96,8 +98,7 @@ public class Server {
                 Socket socket = s.accept();
                 try {
                     System.out.println("Новое соединение установлено");
-                    System.out.println("Данные клиента: " +
-                            socket.getInetAddress());
+                    System.out.println("Данные клиента: " + socket.getInetAddress());
                     clients.add(new Client(socket));
                     new ServerOne(socket);
                 } catch (IOException e) {

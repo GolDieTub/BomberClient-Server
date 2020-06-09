@@ -1,59 +1,19 @@
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
+package game;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+public abstract class Character {
 
-public class Player {
-    private int cordX;
-    int moveSpeed = 3;
+    private boolean isAlive = true;
 
-    public int getCordX() {
-        return cordX;
+    private int moveSpeed = 3;
+
+    final LevelData levelData;
+
+    Character(LevelData levelData) {
+        this.levelData = levelData;
     }
 
-    public void setCordX(int cordX) {
-        this.cordX = cordX;
-    }
-
-    public int getCordY() {
-        return cordY;
-    }
-
-    public void setCordY(int cordY) {
-        this.cordY = cordY;
-    }
-
-    private int cordY;
-    private Client client;
-
-    public Player(Client client) {
-        this.client = client;
-    }
-
-    private void setListeners() {
-        String direction = client.getIn().toString();
-        if (direction.equals("0")) {
-            moveUp();
-
-        }
-
-        if (direction.equals("1")) {
-            moveDown();
-        }
-
-        if (direction.equals("2")) {
-            moveLeft();
-        }
-
-        if (direction.equals("3")) {
-            moveRight();
-        }
-
-        if (direction.equals("4")) {
-            setBomb();
-        }
+    public boolean isAlive() {
+        return isAlive;
     }
 
     private int getAvailableLeftSteps() {
@@ -107,49 +67,36 @@ public class Player {
 
     public void moveLeft() {
         final int availableSteps = getAvailableLeftSteps();
-        // setImageView(new Image(Constants.CHARACTER_IMAGE));
+       // setImageView(new Image(game.Constants.CHARACTER_IMAGE));
         setLayoutX(getLayoutX() - availableSteps);
     }
 
     public void moveRight() {
         final int availableSteps = getAvailableRightSteps();
-        //    setImageView(new Image(Constants.CHARACTER_R));
+    //    setImageView(new Image(game.Constants.CHARACTER_R));
         setLayoutX(getLayoutX() + availableSteps);
     }
 
     public void moveUp() {
         final int availableSteps = getAvailableUpSteps();
-        //   setImageView(new Image(Constants.CHARACTER_U));
+     //   setImageView(new Image(game.Constants.CHARACTER_U));
         setLayoutY(getLayoutY() - availableSteps);
     }
 
     public void moveDown() {
         final int availableSteps = getAvailableDownSteps();
-        // setImageView(new Image(Constants.CHARACTER_IMAGE));
+       // setImageView(new Image(game.Constants.CHARACTER_IMAGE));
         setLayoutY(getLayoutY() + availableSteps);
     }
 
-    public void setBomb() {
-        final int bombPosX = LevelData.getPositionByCoordinate(getLayoutX());
-        final int bombPosY = LevelData.getPositionByCoordinate(getLayoutY());
-        levelData.plantBomb(bombPosX, bombPosY);
-        availableBombCount--;
-    }
-
-    public void releaseBomb() {
-        synchronized (LOCK) {
-            availableBombCount++;
+    public void explosive(final int posX, final int posY) {
+        final double cordX = getLayoutX();
+        final double cordY = getLayoutY();
+        final int characterPosX = LevelData.getPositionByCoordinate(cordX);
+        final int characterPosY = LevelData.getPositionByCoordinate(cordY);
+        if (characterPosX == posX && characterPosY == posY) {
+            isAlive = false;
         }
-    }
-
-    private boolean hasSpaceForBomb() {
-        final int posX = LevelData.getPositionByCoordinate(getLayoutX());
-        final int posY = LevelData.getPositionByCoordinate(getLayoutY());
-        return levelData.getBlockByPosition(posX, posY).isPermeable();
-    }
-
-    public boolean canPlantBomb() {
-        return ((availableBombCount > 0) && hasSpaceForBomb() && isAlive());
     }
 
     private boolean getBlockPermeableByOffset(final int offsetX, final int offsetY) {
@@ -180,5 +127,4 @@ public class Player {
 
         return false;
     }
-
 }
