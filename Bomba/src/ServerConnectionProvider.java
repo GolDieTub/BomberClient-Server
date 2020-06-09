@@ -10,10 +10,10 @@ import java.util.logging.FileHandler;
 
 public class ServerConnectionProvider {
     private BufferedReader in; // поток чтения из сокета
-    private BufferedWriter out; // поток записи в сокет
+    private PrintWriter out; // поток записи в сокет
     private Socket socket;
 
-    public BufferedWriter getOut(){
+    public PrintWriter getOut(){
         return out;
     }
 
@@ -21,7 +21,10 @@ public class ServerConnectionProvider {
         try {
             Socket socket = new Socket("localhost", 8285);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            out = new PrintWriter(
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    socket.getOutputStream())), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,32 +37,29 @@ public class ServerConnectionProvider {
         stage.setScene(new Scene(root, 620, 480));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
-        //ServerMessageThreat.start();
+        ServerMessageThreat serverThreat = new ServerMessageThreat();
     }
     public void startgame() throws IOException {
-        Parent root = FXMLLoader.load(ServerConnectionProvider.class.getResource("connectingMenu.fxml"));
+        Parent root = FXMLLoader.load(ServerConnectionProvider.class.getResource("gamescene.fxml"));
         Stage stage = new Stage();
         stage.setTitle("BOMBERMEN");
         stage.setScene(new Scene(root, 620, 480));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
-        //ServerMessageThreat.start();
+
     }
     public void createConnection() {
-        try {
-            out.write("connected\n");
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ServerMessageThreat serverThreat = new ServerMessageThreat();
+        out.println("connected");
+        //ServerMessageThreat serverThreat = new ServerMessageThreat();
+       // serverThreat.run();
     }
 
     class ServerMessageThreat extends Thread {
         public void run() {
             try {
-                String message = in.readLine();
                 ServerConnectionProvider serverprovider = new ServerConnectionProvider();
+                String message = in.readLine();
+                System.out.println(message);
                 if (message.equals("start")) serverprovider.startgame();
                 else {
                     in.close();

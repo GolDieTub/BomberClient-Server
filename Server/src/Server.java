@@ -11,8 +11,8 @@ class ServerOne extends Thread {
     private BufferedReader in;
     private PrintWriter out;
     private final Object LOCK = new Object();
-    private final List<Lobby> lobbies;
-    private final List<Client> clients = Server.getClients();
+    private List<Lobby> lobbies;
+    private List<Client> clients = Server.getClients();
 
     public ServerOne(Socket s) throws IOException {
         //clients = new ArrayList<>();
@@ -60,9 +60,13 @@ class ServerOne extends Thread {
     public void run() {
         try {
             while (true) {
+                if (Server.getClients().size()==2){
+                    System.out.println(Server.getClients().size());
+                    out.println("start");
+                }
                 String str = in.readLine();
                 System.out.println("Получено: " + str);
-                out.println(str);
+                //out.println(str);
             }
         } catch (IOException e) {
             System.err.println("оишбка ввода/вывода");
