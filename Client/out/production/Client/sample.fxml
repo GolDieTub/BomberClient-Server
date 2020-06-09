@@ -19,12 +19,12 @@
          <children>
             <ImageView fx:id="start" fitHeight="150.0" fitWidth="200.0" layoutX="210.0" layoutY="309.0" onMousePressed="#onStartPressed" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="images/selStart.png" />
+                  <Image url="@images/selStart.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="162.0" fitWidth="358.0" layoutX="131.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="images/BOMBERMEN.png" />
+                  <Image url="@images/BOMBERMEN.png" />
                </image>
             </ImageView>
          </children>
