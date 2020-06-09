@@ -12,6 +12,7 @@ public class Client extends Thread {
 
     private String name;
     private boolean active;
+    // private  dataProvider
 
     public Client(Socket socket) throws IOException {
         this.socket = socket;
@@ -25,11 +26,11 @@ public class Client extends Thread {
                                 socket.getOutputStream())), true);
     }
 
-    public BufferedReader getIn(){
+    public BufferedReader getIn() {
         return in;
     }
 
-    public PrintWriter getOut(){
+    public PrintWriter getOut() {
         return out;
     }
 

@@ -14,6 +14,7 @@ class ServerOne extends Thread {
     private List<Lobby> lobbies;
     private List<Client> clients = Server.getClients();
     final Set<Client> lobbyClients = new HashSet<>();
+    private ArrayList<Player> players;
 
     public ServerOne(Socket s) throws IOException {
         //clients = new ArrayList<>();
@@ -49,7 +50,8 @@ class ServerOne extends Thread {
                 }
             }
         }
-        public Set<Client> getLobbyClients(){
+
+        public Set<Client> getLobbyClients() {
             return lobbyClients;
         }
     }
@@ -60,8 +62,9 @@ class ServerOne extends Thread {
                 if (lobbies != null) {
                     for (Client client : lobbyClients) {
                         client.getOut().println("start");
-
+                        players.add(new Player(client));
                     }
+
                 }
 
             }
@@ -77,7 +80,7 @@ class ServerOne extends Thread {
 
 public class Server {
 
-    static final int Port = 8285;
+    static final int Port = 8286;
     private static List<Client> clients = new ArrayList<>();
 
     public static List<Client> getClients() {
