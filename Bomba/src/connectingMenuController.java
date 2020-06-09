@@ -21,6 +21,10 @@ public class connectingMenuController {
     @FXML
     ImageView connecting;
 
+    public ImageView getConnecting(){
+        return connecting;
+    }
+
     private int time = 500;
     private Runnable timer;
     List<String> connectingsList = new ArrayList();
