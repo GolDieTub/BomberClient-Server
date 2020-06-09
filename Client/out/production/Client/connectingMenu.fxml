@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="620.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="connectingMenuController">
+    <children>
+        <ImageView fx:id="connecting" fitHeight="154.0" fitWidth="368.0" layoutX="170.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" onMousePressed="#onPresse">
+            <image>
+                <Image url="images/wifi/wifi.png" />
+            </image>
+        </ImageView>
+    </children>
+</Pane>
