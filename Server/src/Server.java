@@ -19,13 +19,6 @@ class ServerOne extends Thread {
         //clients = new ArrayList<>();
         lobbies = new ArrayList<>();
         socket = s;
-        in = new BufferedReader(
-                new InputStreamReader(
-                        socket.getInputStream()));
-        out = new PrintWriter(
-                new BufferedWriter(
-                        new OutputStreamWriter(
-                                socket.getOutputStream())), true);
         new ServerOne.LobbyCreator().start();
         start();
     }
@@ -66,15 +59,12 @@ class ServerOne extends Thread {
             while (true) {
                 if (lobbies != null) {
                     for (Client client : lobbyClients) {
-                        out.println("start");
+                        client.getOut().println("start");
+
                     }
                 }
-                String str = in.readLine();
-                System.out.println("Получено: " + str);
-                //out.println(str);
+
             }
-        } catch (IOException e) {
-            System.err.println("оишбка ввода/вывода");
         } finally {
             try {
                 socket.close();
